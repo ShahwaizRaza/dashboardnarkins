@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 export const useSalesData = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,7 +14,7 @@ export const useSalesData = () => {
       setLoading(true);
       setError(null);
       
-      const response = await axios.get('/api/data?reportType=ProductDateWiseSale');
+      const response = await axios.get(`${API_URL}/api/data?reportType=ProductDateWiseSale`);
       
       if (response.data.error) {
         throw new Error(response.data.error);
