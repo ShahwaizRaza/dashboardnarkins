@@ -2,6 +2,11 @@
 FROM node:18-alpine AS build
 WORKDIR /app
 
+# Cache-buster: change this value to force a completely fresh build,
+# bypassing any Docker layer cache. Bump this number if you ever suspect
+# a stale build again.
+ARG CACHE_BUST=2
+
 # Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install
@@ -9,8 +14,20 @@ RUN npm install
 # Copy all source files
 COPY . .
 
+# --- Debug: prove what source Docker actually received ---
+RUN echo "=== useSalesData.js as seen by Docker build ===" && \
+    grep -n "API_URL" src/hooks/useSalesData.js && \
+    echo "=== .env as seen by Docker build ===" && \
+    cat .env
+
 # Build the app (uses .env.production automatically)
 RUN npm run build
+
+# --- Debug: prove what the build actually produced ---
+RUN echo "=== Built asset files ===" && \
+    ls -la dist/assets/ && \
+    echo "=== Checking built JS for hardcoded localhost:5000 ===" && \
+    (grep -l "localhost:5000" dist/assets/*.js && echo "!!! FOUND hardcoded localhost:5000 in build output !!!" || echo "OK: no hardcoded localhost:5000 in build output")
 
 # Stage 2: Serve with Nginx
 FROM nginx:alpine
