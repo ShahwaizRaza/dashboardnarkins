@@ -18,12 +18,6 @@ services:
       - AUTH_PASSWORD=${AUTH_PASSWORD}
     depends_on:
       - narkins-backend
-<<<<<<< HEAD
     expose:
       - "80"
     restart: unless-stopped
-=======
-    ports:
-      - "80"
-    restart: unless-stopped
->>>>>>> 29927c0e652c05e7e4ad1a8b4d4079ae9951f61b
