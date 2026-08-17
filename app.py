@@ -2,32 +2,18 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import requests
 import time
-import os
 from datetime import datetime, date, timedelta
 import pandas as pd
-from dotenv import load_dotenv
-
-load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 
-# API Credentials (set these in Coolify's Environment Variables, not here)
-API_KEY = os.environ.get("SPLENDID_API_KEY")
-API_SECRET = os.environ.get("SPLENDID_API_SECRET")
-APP_ID = os.environ.get("SPLENDID_APP_ID")
-
-if not all([API_KEY, API_SECRET, APP_ID]):
-    raise RuntimeError(
-        "Missing required environment variables: "
-        "SPLENDID_API_KEY, SPLENDID_API_SECRET, SPLENDID_APP_ID must all be set."
-    )
-
+# API Credentials
 HEADERS = {
     "accept": "*/*",
-    "X-Api-Key": API_KEY,
-    "X-Api-Secret": API_SECRET,
-    "X-App-Id": APP_ID,
+    "X-Api-Key": "4fbf65204fd440599dd3817b45cd869a",
+    "X-Api-Secret": "bjHFJT6TbFz2egCjuffpMtnjCizckbYyAZmYKUyVFhMjARRhE8F4c67ATF72ddGgeb8f6wjQoSTqZuuGLv6dvhjqzPtwjfWAv25H",
+    "X-App-Id": "4BC9199C-5C12-420A-8279-01B1C57CCE5D",
     "Content-Type": "application/json-patch+json"
 }
 
